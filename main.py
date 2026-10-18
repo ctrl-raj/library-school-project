@@ -9,11 +9,11 @@ from library_actions import view_my_books, issue_book, return_book
 
 def auth_ui(role):
     print("\nPlease identify yourself:\n1. Login\n2. Register")
-    ch = int(input("Enter choice: "))
+    ch = int(input("\nEnter Choice: "))
     
     if ch == 1:
-        username = input("Enter Username: ")
-        password = input("Enter Password: ")
+        username = input("\nEnter Username: ")
+        password = input("\nEnter Password: ")
 
         res = login(role, username, password)
         if res["success"]:
@@ -25,9 +25,9 @@ def auth_ui(role):
             main_ui()
     
     if ch == 2:
-        name = input("Enter your name: ")
+        name = input("\nEnter your name: ")
         username = input(f"Enter a unique username (e.g.{name.lower().replace(' ', '_')}): ")
-        password = input("Enter Password: ")
+        password = input("\nEnter Password: ")
 
         res = register(role, username, password, name)
         print(res["message"])
@@ -36,7 +36,7 @@ def auth_ui(role):
 
 def init_manager_ui(manager_obj):
     print("1. Issue a book to a student\n2. Record Book Return\n3. View All Issued Records\n4. Logout")
-    ch = int(input("Enter Choice: "))
+    ch = int(input("\nEnter Choice: "))
 
     if ch == 1:
         students = run_query(
@@ -45,8 +45,8 @@ def init_manager_ui(manager_obj):
         )
         print(f"All Students: \n{tabulate(students, headers=['Student ID', 'Name', 'Username'])}") if len(students) else print("You have currently no students enrolled...")
 
-        student_id = int(input("Enter Student ID: "))
-        book_name = str(input("Book Name: ")).lower()
+        student_id = int(input("\nEnter Student ID: "))
+        book_name = str(input("\nBook Name: ")).lower()
 
         res = issue_book(student_id, book_name)
         print(f"\n{res["message"]}")
@@ -59,7 +59,7 @@ def init_manager_ui(manager_obj):
         )
         print(f"\nAll book issues: \n{tabulate(issues, headers=['Issue ID', 'Student ID', 'Book Name', 'Issue Date', 'Return Date', 'Status'])}") if len(issues) else print("You have currently no book issues...")
 
-        issues_id = int(input("Enter Issue ID: "))
+        issues_id = int(input("\nEnter Issue ID: "))
         res = return_book(issues_id)
         print(res["message"])
         init_manager_ui(manager_obj)
@@ -83,7 +83,7 @@ def init_student_ui(student_obj):
 
     print(f"\nWelcome {student_obj[1]}")
     print("Your Options:\n1. View My Issued Books\n2. Logout")
-    ch = int(input("Enter Choice: "))
+    ch = int(input("\nEnter Choice: "))
 
     if ch == 1:
         res = view_my_books(student_id)
@@ -100,7 +100,7 @@ def main_ui():
     print("\n\n--LIBRARY MANAGEMENT--")
 
     print("\nPlease select your role\n1. Manager\n2. Student")
-    ch = int(input("Enter choice: "))
+    ch = int(input("\nEnter Choice: "))
 
     if ch == 1:
         auth_ui(role="manager")
