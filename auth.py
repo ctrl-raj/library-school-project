@@ -47,7 +47,7 @@ def login(role, username, password):
 
         if res:
             name = res[0][1]
-            msg = f"\nWelcome {name}!"
+            msg = f"Welcome {name}!"
         else:
             return {
                 "success": False,

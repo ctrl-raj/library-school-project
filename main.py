@@ -9,11 +9,11 @@ from library_actions import view_my_books, issue_book, return_book
 
 def auth_ui(role):
     print("\nPlease identify yourself:\n1. Login\n2. Register")
-    ch = int(input("\nEnter Choice: "))
+    ch = int(input("Enter Choice: "))
     
     if ch == 1:
-        username = input("\nEnter Username: ")
-        password = input("\nEnter Password: ")
+        username = input("Enter Username: ")
+        password = input("Enter Password: ")
 
         res = login(role, username, password)
         if res["success"]:
@@ -25,9 +25,9 @@ def auth_ui(role):
             main_ui()
     
     if ch == 2:
-        name = input("\nEnter your name: ")
+        name = input("Enter your name: ")
         username = input(f"Enter a unique username (e.g.{name.lower().replace(' ', '_')}): ")
-        password = input("\nEnter Password: ")
+        password = input("Enter Password: ")
 
         res = register(role, username, password, name)
         print(res["message"])
@@ -35,21 +35,21 @@ def auth_ui(role):
         main_ui()
 
 def init_manager_ui(manager_obj):
-    print("1. Issue a book to a student\n2. Record Book Return\n3. View All Issued Records\n4. Logout")
-    ch = int(input("\nEnter Choice: "))
+    print("\n1. Issue a book to a student\n2. Record Book Return\n3. View All Issued Records\n4. Logout")
+    ch = int(input("Enter Choice: "))
 
     if ch == 1:
         students = run_query(
             "SELECT student_id, name, username FROM students",
             fetch=True
         )
-        print(f"All Students: \n{tabulate(students, headers=['Student ID', 'Name', 'Username'])}") if len(students) else print("You have currently no students enrolled...")
+        print(f"All Students:\n{tabulate(students, headers=['Student ID', 'Name', 'Username'])}") if len(students) else print("You have currently no students enrolled...")
 
-        student_id = int(input("\nEnter Student ID: "))
-        book_name = str(input("\nBook Name: ")).lower()
+        student_id = int(input("Enter Student ID: "))
+        book_name = str(input("Book Name: ")).lower()
 
         res = issue_book(student_id, book_name)
-        print(f"\n{res["message"]}")
+        print(res["message"])
         init_manager_ui(manager_obj)
     
     if ch == 2:
@@ -57,9 +57,9 @@ def init_manager_ui(manager_obj):
             "SELECT * FROM book_issues",
             fetch=True
         )
-        print(f"\nAll book issues: \n{tabulate(issues, headers=['Issue ID', 'Student ID', 'Book Name', 'Issue Date', 'Return Date', 'Status'])}") if len(issues) else print("You have currently no book issues...")
+        print(f"All book issues:\n{tabulate(issues, headers=['Issue ID', 'Student ID', 'Book Name', 'Issue Date', 'Return Date', 'Status'])}") if len(issues) else print("You have currently no book issues...")
 
-        issues_id = int(input("\nEnter Issue ID: "))
+        issues_id = int(input("Enter Issue ID: "))
         res = return_book(issues_id)
         print(res["message"])
         init_manager_ui(manager_obj)
@@ -67,7 +67,7 @@ def init_manager_ui(manager_obj):
     if ch == 3:
         issues = view_all_issues()
         issues_data = issues.get("data", []) if issues.get("success") else []
-        print(f"\nAll issues: \n{tabulate(issues_data, headers=['Issue ID', 'Student ID', 'Book Name', 'Issue Date', 'Return Date', 'Status'])}") if len(issues_data) else print("You have currently no book issues...")
+        print(f"All issues:\n{tabulate(issues_data, headers=['Issue ID', 'Student ID', 'Book Name', 'Issue Date', 'Return Date', 'Status'])}") if len(issues_data) else print("You have currently no book issues...")
         init_manager_ui(manager_obj)
 
     elif ch == 4:
@@ -81,9 +81,8 @@ def init_manager_ui(manager_obj):
 def init_student_ui(student_obj):
     student_id = student_obj[0] 
 
-    print(f"\nWelcome {student_obj[1]}")
-    print("Your Options:\n1. View My Issued Books\n2. Logout")
-    ch = int(input("\nEnter Choice: "))
+    print(f"\nYour Options:\n1. View My Issued Books\n2. Logout")
+    ch = int(input("Enter Choice: "))
 
     if ch == 1:
         res = view_my_books(student_id)
@@ -97,10 +96,8 @@ def init_student_ui(student_obj):
         main_ui()
 
 def main_ui():
-    print("\n\n--LIBRARY MANAGEMENT--")
-
-    print("\nPlease select your role\n1. Manager\n2. Student")
-    ch = int(input("\nEnter Choice: "))
+    print("\n--LIBRARY MANAGEMENT--\nPlease select your role\n1. Manager\n2. Student")
+    ch = int(input("Enter Choice: "))
 
     if ch == 1:
         auth_ui(role="manager")
